@@ -1,12 +1,16 @@
-import { Text, View, StyleSheet } from 'react-native';
-import { multiply } from 'react-native-latency';
-
-const result = multiply(3, 7);
+import { View, StyleSheet } from 'react-native';
+import { BenchMark } from 'react-native-latency';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <BenchMark
+        callback={() => {
+          for (let i = 0; i < 1000000; i++) {
+            Math.sqrt(i);
+          }
+        }}
+      />
     </View>
   );
 }

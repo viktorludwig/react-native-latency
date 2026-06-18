@@ -1,0 +1,6 @@
+[install]
+# create-react-native-library + Expo + Metro/Babel expect a flat (hoisted)
+# node_modules so transitive packages like `babel-preset-expo` and
+# `@expo/metro-config` resolve by bare specifier. Bun's isolated linker
+# (the default here) breaks those lookups.
+linker = "hoisted"
