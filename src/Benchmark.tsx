@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Button, Text } from 'react-native';
 import { ProgressBar } from './ProgressBar';
+import { computeKDE } from './kde';
+import { LineChart } from './LineChart';
 
 type Props = {
   callback: () => void;
@@ -13,6 +15,8 @@ export function BenchMark(props: Props) {
 
   const [latency, setLatency] = useState(0);
   const [initialLatency, setInitialLatency] = useState(0);
+
+  const [kdeData, setKDEData] = useState<{ x: number; y: number }[]>([]);
 
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
@@ -47,6 +51,10 @@ export function BenchMark(props: Props) {
     console.log(`Avg Latency: ${avgResult} ms`);
     setHasRun(true);
     setIsRunning(false);
+
+    const curve = computeKDE(results, 1, 100);
+    setKDEData(curve);
+    console.log('KDE Data:', curve);
   };
 
   return (
@@ -64,6 +72,7 @@ export function BenchMark(props: Props) {
         <>
           <Text>Measured avg {latency.toFixed(2)} ms,</Text>
           <Text>Initial warmup run: {initialLatency.toFixed(2)} ms</Text>
+          <LineChart width={300} height={200} data={kdeData} />
         </>
       )}
     </>
