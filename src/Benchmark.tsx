@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { Button, Text } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import { ProgressBar } from './ProgressBar';
 import { computeKDE } from './kde';
 import { LineChart } from './LineChart';
+import { computeStats } from './stats';
+import type { Marker, Point } from './types';
 
 type Props = {
   callback: () => void;
@@ -13,10 +15,10 @@ export function BenchMark(props: Props) {
   const [isRunning, setIsRunning] = useState(false);
   const [currentLoop, setCurrentLoop] = useState(0);
 
-  const [latency, setLatency] = useState(0);
   const [initialLatency, setInitialLatency] = useState(0);
 
-  const [kdeData, setKDEData] = useState<{ x: number; y: number }[]>([]);
+  const [kdeData, setKDEData] = useState<Point[]>([]);
+  const [markers, setMarkers] = useState<Marker[]>([]);
 
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
@@ -45,16 +47,14 @@ export function BenchMark(props: Props) {
       await delay(0);
     }
 
-    const avgResult =
-      results.reduce((sum, result) => sum + result, 0) / results.length;
-    setLatency(avgResult);
-    console.log(`Avg Latency: ${avgResult} ms`);
     setHasRun(true);
     setIsRunning(false);
 
-    const curve = computeKDE(results, 1, 100);
+    const curve = computeKDE(results, 0.1, 100);
     setKDEData(curve);
-    console.log('KDE Data:', curve);
+
+    const stats = computeStats(results);
+    setMarkers(stats);
   };
 
   return (
@@ -70,11 +70,63 @@ export function BenchMark(props: Props) {
 
       {hasRun && (
         <>
-          <Text>Measured avg {latency.toFixed(2)} ms,</Text>
-          <Text>Initial warmup run: {initialLatency.toFixed(2)} ms</Text>
-          <LineChart width={300} height={200} data={kdeData} />
+          <LineChart
+            width={300}
+            height={200}
+            data={kdeData}
+            markers={markers}
+          />
+          <View style={styles.statsTable}>
+            {[
+              ...markers,
+              {
+                key: 'initial',
+                label: 'Initial',
+                value: initialLatency,
+              },
+            ].map((marker) => (
+              <View key={marker.key} style={styles.statsRow}>
+                <Text style={styles.statsLabel}>{marker.label}</Text>
+
+                <Text style={styles.statsValue}>{marker.value.toFixed(2)}</Text>
+
+                <Text style={styles.statsUnit}>ms</Text>
+              </View>
+            ))}
+          </View>
         </>
       )}
     </>
   );
 }
+const styles = StyleSheet.create({
+  statsTable: {
+    marginTop: 32,
+    alignSelf: 'center',
+  },
+  statsRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    marginBottom: 4,
+  },
+  statsLabel: {
+    width: 128,
+    fontSize: 16,
+    color: '#555',
+    fontWeight: 'bold',
+  },
+  statsValue: {
+    width: 128,
+    textAlign: 'right',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#111',
+  },
+  statsUnit: {
+    width: 24,
+    marginLeft: 4,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#555',
+  },
+});
