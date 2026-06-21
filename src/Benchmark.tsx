@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
-import * as Device from 'expo-device';
+import { Pressable, Platform, StyleSheet, Text, View } from 'react-native';
 import { ProgressBar } from './ProgressBar';
 import { computeKDE } from './kde';
 import { LineChart } from './LineChart';
@@ -9,7 +8,20 @@ import type { Marker, Point } from './types';
 
 type Props = {
   callback: () => void;
+  deviceLabel?: string;
 };
+
+function getDefaultDeviceLabel() {
+  if (Platform.OS === 'android') {
+    return `${Platform.constants.Manufacturer}: ${Platform.constants.Model}`;
+  }
+
+  if (Platform.OS === 'ios') {
+    return `Apple: ${Platform.constants.systemName} ${Platform.constants.osVersion}`;
+  }
+
+  return Platform.OS;
+}
 
 export function BenchMark(props: Props) {
   const [hasRun, setHasRun] = useState(false);
@@ -41,6 +53,7 @@ export function BenchMark(props: Props) {
 
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
+  const deviceLabel = props.deviceLabel ?? getDefaultDeviceLabel();
 
   const runBenchmark = async () => {
     const warmupRuns = 1;
@@ -84,11 +97,18 @@ export function BenchMark(props: Props) {
           <ProgressBar progress={currentLoop / 100} />
         </>
       ) : (
-        <Button
-          title={hasRun ? 'Run Benchmark Again' : 'Run Benchmark'}
+        <Pressable
           onPress={runBenchmark}
-          color={styles.button.color}
-        />
+          style={({ pressed }) =>
+            pressed
+              ? { ...styles.button, opacity: 0.5 }
+              : { ...styles.button, opacity: 1 }
+          }
+        >
+          <Text style={styles.button}>
+            {hasRun ? 'Run Benchmark Again' : 'Run Benchmark'}
+          </Text>
+        </Pressable>
       )}
 
       {hasRun && (
@@ -140,10 +160,7 @@ export function BenchMark(props: Props) {
           </View>
         </View>
       )}
-      <Text style={styles.deviceInfo}>
-        {Device.manufacturer}: {Device.modelName} {Device.osName}{' '}
-        {Device.osVersion}
-      </Text>
+      <Text style={styles.deviceInfo}>{deviceLabel}</Text>
 
       {__DEV__ && (
         <Text style={styles.devModeWarning}>
@@ -162,7 +179,12 @@ const styles = StyleSheet.create({
     height: 440,
   },
   button: {
-    color: 'teal',
+    padding: 8,
+    borderRadius: 32,
+    fontSize: 16,
+    fontWeight: 'bold',
+    backgroundColor: 'teal',
+    color: 'white',
   },
   container: {
     marginTop: 32,

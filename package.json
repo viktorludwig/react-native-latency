@@ -35,8 +35,8 @@
     "typescript": "^6.0.3"
   },
   "peerDependencies": {
-    "react": ">=19.2.3",
-    "react-native": ">=0.85.3"
+    "react": ">=18.2.0",
+    "react-native": ">=0.73.0"
   },
   "exports": {
     ".": {
@@ -166,8 +166,5 @@
   "types": "./lib/typescript/src/index.d.ts",
   "workspaces": [
     "example"
-  ],
-  "dependencies": {
-    "expo-device": "~56.0.4"
-  }
+  ]
 }
