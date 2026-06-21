@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SaveFormat, useImageManipulator } from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
-import { BenchMark } from 'react-native-latency';
+import { Benchmark } from 'react-native-latency';
 
 type PickedImage = {
   uri: string;
@@ -74,7 +74,7 @@ export default function App() {
         )}
       </View>
 
-      {pickedImage && <BenchMark callback={resizeSelectedImage} />}
+      {pickedImage && <Benchmark callback={resizeSelectedImage} />}
     </ScrollView>
   );
 }

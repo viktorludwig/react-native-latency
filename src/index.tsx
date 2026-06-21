@@ -1,1 +1,2 @@
-export { BenchMark } from './Benchmark';
+export { Benchmark } from './Benchmark';
+export type { BenchmarkProps } from './Benchmark';
