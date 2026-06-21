@@ -24,6 +24,16 @@
       },
       "package": "latency.example"
     },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Latency Example to choose a benchmark image.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ]
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
     }

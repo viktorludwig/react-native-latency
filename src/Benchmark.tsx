@@ -7,7 +7,7 @@ import { computeStats } from './stats';
 import type { Marker, Point } from './types';
 
 type Props = {
-  callback: () => void;
+  callback: () => void | Promise<void>;
   deviceLabel?: string;
 };
 
@@ -66,7 +66,7 @@ export function BenchMark(props: Props) {
     for (let i = 0; i < warmupRuns + measuredRuns; i++) {
       setCurrentLoop(i);
       const start = performance.now();
-      props.callback();
+      await props.callback();
 
       const end = performance.now();
       const measurement = end - start;
@@ -91,6 +91,7 @@ export function BenchMark(props: Props) {
 
   return (
     <View style={styles.benchmark}>
+      <Text>Function: {props.callback.name}</Text>
       {isRunning ? (
         <>
           <Text>Running benchmark, loop: {currentLoop}</Text>
@@ -105,7 +106,7 @@ export function BenchMark(props: Props) {
               : { ...styles.button, opacity: 1 }
           }
         >
-          <Text style={styles.button}>
+          <Text style={styles.buttonText}>
             {hasRun ? 'Run Benchmark Again' : 'Run Benchmark'}
           </Text>
         </Pressable>
@@ -175,16 +176,20 @@ export function BenchMark(props: Props) {
 const styles = StyleSheet.create({
   benchmark: {
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    height: 440,
+    width: '100%',
   },
   button: {
-    padding: 8,
     borderRadius: 32,
-    fontSize: 16,
-    fontWeight: 'bold',
+    marginTop: 16,
     backgroundColor: 'teal',
     color: 'white',
+    padding: 8,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+    padding: 8,
   },
   container: {
     marginTop: 32,
@@ -220,7 +225,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 60,
     color: 'grey',
     marginBottom: 16,
-    justifyContent: 'flex-end',
   },
   deviceInfo: {
     fontSize: 12,
@@ -228,6 +232,5 @@ const styles = StyleSheet.create({
     marginTop: 36,
     marginHorizontal: 60,
     alignSelf: 'flex-start',
-    justifyContent: 'flex-end',
   },
 });
