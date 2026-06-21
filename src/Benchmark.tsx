@@ -20,6 +20,24 @@ export function BenchMark(props: Props) {
   const [kdeData, setKDEData] = useState<Point[]>([]);
   const [markers, setMarkers] = useState<Marker[]>([]);
 
+  const statsConfig: Record<string, { color: string }> = {
+    median: {
+      color: 'navy',
+    },
+    p95: {
+      color: 'maroon',
+    },
+    min: {
+      color: 'black',
+    },
+    max: {
+      color: 'black',
+    },
+    initial: {
+      color: 'black',
+    },
+  };
+
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -59,17 +77,27 @@ export function BenchMark(props: Props) {
 
   return (
     <>
+      {__DEV__ && (
+        <Text style={styles.devModeWarning}>
+          Development mode detected, for more realistic results, run in release
+          mode.
+        </Text>
+      )}
       {isRunning ? (
         <>
           <Text>Running benchmark, loop: {currentLoop}</Text>
           <ProgressBar progress={currentLoop / 100} />
         </>
       ) : (
-        <Button title="Run Benchmark" onPress={runBenchmark} />
+        <Button
+          title={hasRun ? 'Run Benchmark Again' : 'Run Benchmark'}
+          onPress={runBenchmark}
+          color={styles.button.color}
+        />
       )}
 
       {hasRun && (
-        <>
+        <View style={styles.container}>
           <LineChart
             width={300}
             height={200}
@@ -86,20 +114,48 @@ export function BenchMark(props: Props) {
               },
             ].map((marker) => (
               <View key={marker.key} style={styles.statsRow}>
-                <Text style={styles.statsLabel}>{marker.label}</Text>
+                <Text
+                  style={[
+                    styles.statsLabel,
+                    { color: statsConfig[marker.key].color },
+                  ]}
+                >
+                  {marker.label}
+                </Text>
 
-                <Text style={styles.statsValue}>{marker.value.toFixed(2)}</Text>
+                <Text
+                  style={[
+                    styles.statsValue,
+                    { color: statsConfig[marker.key].color },
+                  ]}
+                >
+                  {marker.value.toFixed(2)}
+                </Text>
 
-                <Text style={styles.statsUnit}>ms</Text>
+                <Text
+                  style={[
+                    styles.statsUnit,
+                    { color: statsConfig[marker.key].color },
+                  ]}
+                >
+                  ms
+                </Text>
               </View>
             ))}
           </View>
-        </>
+        </View>
       )}
     </>
   );
 }
 const styles = StyleSheet.create({
+  button: {
+    color: 'teal',
+  },
+  container: {
+    marginTop: 32,
+    alignItems: 'center',
+  },
   statsTable: {
     marginTop: 32,
     alignSelf: 'center',
@@ -112,7 +168,6 @@ const styles = StyleSheet.create({
   statsLabel: {
     width: 128,
     fontSize: 16,
-    color: '#555',
     fontWeight: 'bold',
   },
   statsValue: {
@@ -120,13 +175,16 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#111',
   },
   statsUnit: {
     width: 24,
     marginLeft: 4,
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#555',
+  },
+  devModeWarning: {
+    marginHorizontal: 60,
+    color: 'grey',
+    marginBottom: 16,
   },
 });
