@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
+import * as Device from 'expo-device';
 import { ProgressBar } from './ProgressBar';
 import { computeKDE } from './kde';
 import { LineChart } from './LineChart';
@@ -76,13 +77,7 @@ export function BenchMark(props: Props) {
   };
 
   return (
-    <>
-      {__DEV__ && (
-        <Text style={styles.devModeWarning}>
-          Development mode detected, for more realistic results, run in release
-          mode.
-        </Text>
-      )}
+    <View style={styles.benchmark}>
       {isRunning ? (
         <>
           <Text>Running benchmark, loop: {currentLoop}</Text>
@@ -145,10 +140,27 @@ export function BenchMark(props: Props) {
           </View>
         </View>
       )}
-    </>
+      <Text style={styles.deviceInfo}>
+        {Device.manufacturer}: {Device.modelName} {Device.osName}{' '}
+        {Device.osVersion}
+      </Text>
+
+      {__DEV__ && (
+        <Text style={styles.devModeWarning}>
+          Development mode detected, for more realistic results, run on a
+          production build or with development build and "npx expo start
+          --dev-client --no-dev --minify".
+        </Text>
+      )}
+    </View>
   );
 }
 const styles = StyleSheet.create({
+  benchmark: {
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    height: 440,
+  },
   button: {
     color: 'teal',
   },
@@ -186,5 +198,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 60,
     color: 'grey',
     marginBottom: 16,
+    justifyContent: 'flex-end',
+  },
+  deviceInfo: {
+    fontSize: 12,
+    marginBottom: 16,
+    marginTop: 36,
+    marginHorizontal: 60,
+    alignSelf: 'flex-start',
+    justifyContent: 'flex-end',
   },
 });

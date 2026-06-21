@@ -166,5 +166,8 @@
   "types": "./lib/typescript/src/index.d.ts",
   "workspaces": [
     "example"
-  ]
+  ],
+  "dependencies": {
+    "expo-device": "~56.0.4"
+  }
 }
