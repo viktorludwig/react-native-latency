@@ -6,8 +6,16 @@ import { LineChart } from './LineChart';
 import { computeStats } from './stats';
 import type { Marker, Point } from './types';
 
-type Props = {
+export type BenchmarkProps = {
+  /**
+   * Function that should be benchmarked. It is executed once as warmup and then
+   * repeatedly for measured runs. Async callbacks are awaited and measured end to end.
+   */
   callback: () => void | Promise<void>;
+  /**
+   * Optional label shown below the benchmark results. When omitted, the component
+   * derives a best-effort device label from React Native's Platform constants.
+   */
   deviceLabel?: string;
 };
 
@@ -23,7 +31,14 @@ function getDefaultDeviceLabel() {
   return Platform.OS;
 }
 
-export function BenchMark(props: Props) {
+/**
+ * Runs a small interactive latency benchmark for a synchronous or asynchronous callback.
+ *
+ * The component renders a button, executes the provided callback across repeated runs,
+ * then displays a density chart plus min, median, p95, max, and initial-run timings.
+ * For realistic measurements, run it in a production or non-development build.
+ */
+export function Benchmark(props: BenchmarkProps) {
   const [hasRun, setHasRun] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
   const [currentLoop, setCurrentLoop] = useState(0);
