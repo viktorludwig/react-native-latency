@@ -65,7 +65,7 @@
     ],
     "version": "0.63.0"
   },
-  "description": "React-native-latency lets you run experiments to measure the runtime of your coder tool to ",
+  "description": "React-native-latency lets you run experiments to measure the runtime of your react native code.",
   "files": [
     "lib",
     "src",
