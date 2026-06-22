@@ -67,23 +67,11 @@
   },
   "description": "React-native-latency lets you run experiments to measure the runtime of your coder tool to ",
   "files": [
-    "src",
     "lib",
-    "android",
-    "ios",
-    "cpp",
-    "*.podspec",
-    "react-native.config.js",
-    "!ios/build",
-    "!android/build",
-    "!android/gradle",
-    "!android/gradlew",
-    "!android/gradlew.bat",
-    "!android/local.properties",
+    "src",
     "!**/__tests__",
     "!**/__fixtures__",
-    "!**/__mocks__",
-    "!**/.*"
+    "!**/__mocks__"
   ],
   "homepage": "https://github.com/viktorludwig/react-native-latency#readme",
   "jest": {
@@ -102,8 +90,16 @@
   },
   "keywords": [
     "react-native",
+    "benchmark",
+    "latency",
+    "performance",
+    "profiling",
+    "measurements",
+    "runtime",
+    "timing",
     "ios",
-    "android"
+    "android",
+    "microbenchmark"
   ],
   "license": "MIT",
   "packageManager": "bun@1.3.14",
