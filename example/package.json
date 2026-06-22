@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "build:ios": "xcodebuild ONLY_ACTIVE_ARCH=YES -workspace ios/LatencyExample.xcworkspace -UseNewBuildSystem=YES -scheme LatencyExample -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build -quiet",
     "build:android": "cd android && ./gradlew assembleDebug -DtestBuildType=debug -Dorg.gradle.jvmargs=-Xmx4g",
@@ -20,6 +20,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.85.3",
+    "react-native-fast-opencv": "0.4.8",
     "react-native-web": "~0.21.0"
   },
   "private": true,
