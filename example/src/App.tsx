@@ -17,6 +17,7 @@ type PickedImage = {
   name: string;
   width: number;
   height: number;
+  base64: string;
 };
 
 type OpenCVResizeContext = {
@@ -53,7 +54,7 @@ export default function App() {
     };
   }, [openCVResizeContext]);
 
-  const resizeSelectedImage = async () => {
+  const resizeImageWithExpo = async () => {
     if (!pickedImage) {
       console.warn('No image selected');
       return;
@@ -68,7 +69,7 @@ export default function App() {
     });
   };
 
-  const resizeSelectedImageWithFastOpenCV = () => {
+  const resizeImageWithFastOpenCV = () => {
     if (!openCVResizeContext) {
       console.warn('No image selected');
       return;
@@ -83,6 +84,27 @@ export default function App() {
       0,
       InterpolationFlags.INTER_CUBIC
     );
+  };
+
+  const resizeImageWithFastOpenCVAndB64 = () => {
+    if (!pickedImage || !openCVResizeContext) {
+      console.warn('No image selected');
+      return;
+    }
+
+    const source = OpenCV.base64ToMat(pickedImage.base64);
+
+    OpenCV.invoke(
+      'resize',
+      source,
+      openCVResizeContext.destination,
+      openCVResizeContext.size,
+      0,
+      0,
+      InterpolationFlags.INTER_CUBIC
+    );
+
+    OpenCV.releaseBuffers([source.id]);
   };
 
   const pickImage = async () => {
@@ -121,6 +143,7 @@ export default function App() {
       name: getImageName(asset),
       width: asset.width,
       height: asset.height,
+      base64: asset.base64,
     });
   };
 
@@ -141,8 +164,12 @@ export default function App() {
 
       {pickedImage && (
         <View style={styles.benchmarks}>
-          <Benchmark callback={resizeSelectedImage} />
-          <Benchmark callback={resizeSelectedImageWithFastOpenCV} />
+          <Benchmark callback={resizeImageWithExpo} deviceLabel="S24" />
+          <Benchmark callback={resizeImageWithFastOpenCV} />
+          <Benchmark
+            callback={resizeImageWithFastOpenCVAndB64}
+            deviceLabel="S24"
+          />
         </View>
       )}
     </ScrollView>
