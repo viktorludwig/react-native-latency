@@ -1,12 +1,12 @@
 # react-native-latency
 
+<img src="./1000089787_cropped.jpg" alt="react-native-latency benchmark screenshot" width="360" />
+
 Run small latency experiments in React Native and visualize the result directly
 in your app. `react-native-latency` measures a callback over repeated runs and
-shows a density chart plus min, median, p95, max, and initial-run timings.
+shows a density chart plus min, median, 95th percentile, max, and initial-run timings.
 
-- TypeScript support
 - Zero runtime dependencies
-- Supports sync and async callbacks
 - Works with React Native `>=0.73.0`
 
 ## Installation
@@ -20,17 +20,6 @@ bun add react-native-latency
 ```
 
 ## Usage
-
-For meaningful numbers, run benchmarks in a production build or in a
-non-development build. Development mode adds React Native and tooling overhead
-that can dominate short-running callbacks.
-
-If you use Expo development builds, start Metro without development mode and
-with minification:
-
-```sh
-npx expo start --dev-client --no-dev --minify
-```
 
 ```tsx
 import { Benchmark } from 'react-native-latency';
@@ -56,6 +45,19 @@ The callback can also be synchronous:
   }}
 />
 ```
+
+For meaningful numbers, run benchmarks in a production build or in a
+non-development build. Development mode adds React Native and tooling overhead
+that can dominate short-running callbacks.
+
+If you use Expo development builds, start Metro without development mode and
+with minification:
+
+```sh
+npx expo start --dev-client --no-dev --minify
+```
+
+On Android, these flags have to be set manually in the developer menu (shake device -> Settings).
 
 ## Props
 
