@@ -3,6 +3,7 @@
     "name": "Latency Example",
     "slug": "react-native-latency-example",
     "version": "1.0.0",
+    "scheme": "latency.example",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

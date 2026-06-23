@@ -140,7 +140,7 @@ export function Benchmark(props: BenchmarkProps) {
               ...markers,
               {
                 key: 'initial',
-                label: 'Initial',
+                label: 'initial',
                 value: initialLatency,
               },
             ].map((marker) => (
