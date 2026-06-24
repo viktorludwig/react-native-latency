@@ -1,6 +1,6 @@
 # react-native-latency
 
-<img src="./1000089787_cropped.jpg" alt="react-native-latency benchmark screenshot" width="360" />
+<img align="right" src="./1000089787_cropped.jpg" alt="react-native-latency benchmark screenshot" width="274" />
 
 Run small latency experiments in React Native and visualize the result directly
 in your app. `react-native-latency` measures a callback over repeated runs and
@@ -79,6 +79,12 @@ device names such as `iPhone 17 Pro`; pass `deviceLabel` if you want to show one
   "react-native": ">=0.73.0"
 }
 ```
+
+## Roadmap
+
+- Allow for more benchmark examples to be added
+- Optional break between runs, e.g. to let requests finish
+- Make smoothing more stable (e.g. autoadjust bandwith parameter)
 
 ## Contributing
 
