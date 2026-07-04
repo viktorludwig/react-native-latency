@@ -6,10 +6,10 @@ Run small latency experiments in React Native and visualize the result directly
 in your app. `react-native-latency` measures a callback over repeated runs and
 shows a density chart plus min, median, 95th percentile, max, and initial-run timings.
 
-- Zero runtime dependencies
-- Works with React Native `>=0.73.0`
+- ⚡ Zero runtime dependencies
+- ⚛️ Works with React Native `>=0.73.0`
 
-## Installation
+## 📦 Installation
 
 ```sh
 npm install react-native-latency
@@ -19,7 +19,7 @@ npm install react-native-latency
 bun add react-native-latency
 ```
 
-## Usage
+## 🚀 Usage
 
 ```tsx
 import { Benchmark } from 'react-native-latency';
@@ -59,19 +59,19 @@ npx expo start --dev-client --no-dev --minify
 
 On Android, these flags have to be set manually in the developer menu (shake device -> Settings).
 
-## Props
+## 🔧 Props
 
 | Prop          | Type                          | Required | Description                                                                                                         |
 | ------------- | ----------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
 | `callback`    | `() => void \| Promise<void>` | Yes      | Function to benchmark. Async callbacks are awaited and measured end to end.                                         |
 | `deviceLabel` | `string`                      | No       | Label shown below the benchmark. If omitted, a best-effort label is derived from React Native `Platform` constants. |
 
-## Notes
+## ⚠️ Notes
 
 On iOS, React Native's built-in `Platform` constants do not expose marketing
 device names such as `iPhone 17 Pro`; pass `deviceLabel` if you want to show one.
 
-## Compatibility
+## 🧩 Compatibility
 
 ```json
 {
@@ -80,19 +80,19 @@ device names such as `iPhone 17 Pro`; pass `deviceLabel` if you want to show one
 }
 ```
 
-## Roadmap
+## 🗺️ Roadmap
 
 - Allow for more benchmark examples to be added
 - Optional break between runs, e.g. to let requests finish
 - Make smoothing more stable (e.g. autoadjust bandwith parameter)
 
-## Contributing
+## 🤝 Contributing
 
 - [Development workflow](CONTRIBUTING.md#development-workflow)
 - [Sending a pull request](CONTRIBUTING.md#sending-a-pull-request)
 - [Code of conduct](CODE_OF_CONDUCT.md)
 
-## License
+## 📄 License
 
 MIT
 
